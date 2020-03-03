@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -64,7 +65,7 @@ class _ChatRoomState extends State<ChatRoom> {
       body: new Column(
         children: <Widget>[
           new Flexible(
-            flex: 10,
+
             child: new FirebaseAnimatedList(
               query: itemRef,
               itemBuilder: (BuildContext context,DataSnapshot snapshot,Animation<double> animation, int index){
@@ -79,33 +80,35 @@ class _ChatRoomState extends State<ChatRoom> {
 
 
           new Flexible(
-            flex: 1,
+            flex: 0,
             child: new Center(
               child: new Form(
                 key: formKey,
+                child: new Padding(padding: EdgeInsets.all(10.0),
                 child: new Flex(
                   direction: Axis.horizontal,
                   children: <Widget>[
-                   new Expanded(
-                     child: new TextFormField(
-                       decoration: new InputDecoration(
-                         hintText: 'Type a message',
-                         contentPadding: new EdgeInsets.only(left: 10.0)
-                       ),
-                       autofocus: true,
-                       initialValue: '',
-                       onSaved: (val) {
-                         item.username=username;
-                         item.body = val;
-                         },
-                       validator: (val) => val == "" ? val : null,
-                   ),
-                   ),
+                    new Expanded(
+                      child: new TextFormField(
+                        decoration: new InputDecoration(
+                            hintText: 'Type a message',
+                            contentPadding: new EdgeInsets.only(left: 10.0)
+                        ),
+                        autofocus: true,
+                        initialValue: '',
+                        onSaved: (val) {
+                          item.username=username;
+                          item.body = val;
+                        },
+                        validator: (val) => val == "" ? val : null,
+                      ),
+                    ),
                     new IconButton(
                       icon: new Icon(Icons.send),
                       onPressed: Submit,
                     ),
                   ],
+                ),
                 ),
               ),
             ),
