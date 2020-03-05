@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/ChatRoom.dart';
-import 'dart:io';
-import 'dart:async';
 import './GoogleSignIn.dart' as google;
 
 class GoogleLogin extends StatefulWidget{

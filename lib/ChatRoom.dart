@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import './customVariable/Item.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import './GoogleSignIn/googleaccount.dart';
 
 class ChatRoom extends StatefulWidget {
   ChatRoom(this.username);
@@ -15,6 +17,11 @@ class _ChatRoomState extends State<ChatRoom> {
   _ChatRoomState(this.username);
   final String username;
 
+  FirebaseUser user;
+  final auth =FirebaseAuth.instance;
+
+  String email;
+
   List<Item> items = List();
   Item item;
   DatabaseReference itemRef;
@@ -24,6 +31,7 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   void initState() {
     super.initState();
+    getuserdata();
     item = new Item("","");
     final FirebaseDatabase database =FirebaseDatabase.instance;
     itemRef = database.reference().child("chat");
@@ -54,12 +62,29 @@ class _ChatRoomState extends State<ChatRoom> {
       itemRef.push().set(item.toJson());
     }
   }
+
+
+  Future<void> getuserdata() async{ //i can git user data here so this is not important to get user data in constractor
+     user = await auth.currentUser();
+     //username =user.displayName;
+     email=user.email;
+  }
+
+  void signup() async{
+    await auth.signOut();
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> new GoogleLogin()));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: new AppBar(
         title: new Text("CustomRoom"),
+        actions: <Widget>[
+          new IconButton(icon: new Icon(Icons.label_outline), onPressed: signup)
+        ],
       ),
       resizeToAvoidBottomPadding: false,
       body: new Column(
